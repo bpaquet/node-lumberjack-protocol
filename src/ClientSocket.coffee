@@ -84,7 +84,7 @@ class ClientSocket extends EventEmitter
 
         @connected = false
 
-        @_socket?.removeAllListeners()
+        @_socket?.removeAllListeners().on('error', =>)
         @_socket = null
 
         # Since we're not going to send any more events...
