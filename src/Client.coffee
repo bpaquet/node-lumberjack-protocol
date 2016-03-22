@@ -77,7 +77,7 @@ class Client extends EventEmitter
     # Additional field in `data` will be passed up to the receiver.  If you are sending to Logstash,
     # it will add these to the log entry.
     #
-    writeDataFrame: (data) ->
+    writeDataFrame: (data, callback) ->
         throw new Error "Client is closed" if @_closed
 
         # This is modeled after https://github.com/elasticsearch/logstash-forwarder/blob/master/publisher1.go
@@ -100,6 +100,8 @@ class Client extends EventEmitter
                 if err? and !(err instanceof ClientSocket.DroppedError)
                     # Couldn't send the message - queue for later.
                     @_queueMessage data
+                if callback?
+                    callback()
 
     # Shut down this client.
     close: ->
